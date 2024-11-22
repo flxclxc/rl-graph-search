@@ -24,7 +24,6 @@ if __name__ == "__main__":
     parser.add_argument("--verbose", type=bool, default=False)
     parser.add_argument("--no_eval", action="store_true")
     parser.add_argument("--seed", type=int, default=0)
-    parser.add_argument("--curriculum_learning", action="store_true")
     parser.add_argument("--no_log", action="store_false")
     parser.add_argument("--truncation_length", type=int, default=100)
     parser.add_argument("--n_episodes", type=int, default=100000)

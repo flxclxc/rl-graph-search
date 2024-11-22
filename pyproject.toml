@@ -1,0 +1,26 @@
+[tool.poetry]
+name = "rl-graph-search"
+version = "0.1.0"
+description = ""
+authors = ["Alexei Pisacane, Victor Darvariu, Mirco Musolesi"]
+readme = "README.md"
+package-mode = false
+
+[tool.poetry.dependencies]
+python = "^3.10"
+matplotlib = "^3.9.2"
+networkx = "^3.4.2"
+numpy = "^2.1.3"
+optuna = "^4.1.0"
+scikit-learn = "^1.5.2"
+scipy = "^1.14.1"
+torch = "^2.5.1"
+torch-geometric = "^2.6.1"
+tqdm = "^4.67.0"
+imageio = "^2.36.0"
+wandb = "^0.18.7"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

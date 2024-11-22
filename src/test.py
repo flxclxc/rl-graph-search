@@ -8,8 +8,12 @@ from os import path
 import numpy as np
 import torch as T
 
-from agents.baselines import (ConnectionWalker, DistanceWalker, GreedyWalker,
-                              RandomWalker)
+from agents.baselines import (
+    ConnectionWalker, 
+    DistanceWalker, 
+    GreedyWalker,
+    RandomWalker
+    )
 from agents.gnn_a2c import GNNA2C
 from agents.mlp_a2c import MLPA2C
 from utils.env import Env

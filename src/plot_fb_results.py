@@ -23,7 +23,7 @@ if __name__ == "__main__":
 
     with open("results/results.json", "r") as f:
         results = json.load(f)[args.graph]
-    import pdb;pdb.set_trace()
+
     oracle_lengths = results["oracle"]
 
     if args.truncate == "n":

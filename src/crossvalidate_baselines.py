@@ -19,6 +19,7 @@ if __name__ == '__main__':
         "beta_0_5", 
         "beta_1_seed_0"
         ]
+    
     for i, (beta, graph_name) in enumerate(zip(betas, graph_names)):
         experiment_dir = os.path.join("graphs", graph_name)
         env = Env(

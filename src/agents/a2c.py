@@ -1,5 +1,3 @@
-import os
-
 import networkx as nx
 import torch as T
 from torch_geometric import utils

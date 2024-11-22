@@ -7,7 +7,7 @@ from torch_geometric.data import Batch
 from torch_geometric.loader import DataLoader
 
 from agents.a2c import A2C
-from networks import GAT, ActorNetwork, CriticNetwork
+from agents.networks import GAT, ActorNetwork, CriticNetwork
 
 
 class GNNA2C(A2C):

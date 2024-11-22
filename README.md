@@ -7,10 +7,7 @@ Inspired by seminal work in experimental sociology, which showed that decentrali
 
 ### Prerequisites
 
-Before you begin, make sure you have the following installed:
-
-- Python 3.11.3
-- Required Python packages (install using `pip install -r requirements.txt`)
+- Python 3.10
 
 ### Clone the Repository
 
@@ -20,6 +17,15 @@ Clone this repository to your local machine:
 git clone https://github.com/yourusername/project-name.git
 cd project-name
 ```
+
+### Install the Requirements
+
+Install the required Python packages using Poetry:
+
+```sh
+poetry install
+```
+
 ### Download the Data
 
 Download the Facebook data to your local machine, and run the experimental setup script to preprocess the graphs:
@@ -39,7 +45,7 @@ python src/setup/synthetic_graph_setup --n {N} --alpha {ALPHA} --beta {BETA} --e
 To train a model from {mlp,gnn} on a given graph, run the following command:
 
 ```sh
-python src/train.py --model {MODEL} --graph {GRAPH} --n_episodes {N_EPISODES}
+python src/train.py --model {MODEL} --graph {GRAPH} --n_episodes {N_EPISODES} --seed {SEED}
 ```
 ### Evaluate models
 

@@ -4,7 +4,7 @@ import networkx as nx
 import torch as T
 
 from agents.a2c import A2C
-from networks import ActorNetwork, CriticNetwork
+from agents.networks import ActorNetwork, CriticNetwork
 
 
 class MLPA2C(A2C):
