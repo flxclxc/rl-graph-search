@@ -28,12 +28,13 @@ git clone https://github.com/yourusername/project-name.git
 cd project-name
 ```
 
-### Install the Requirements
+### Environment Setup
 
-Install the required Python packages using Poetry:
+Install the required Python packages using Poetry, and activate the environment:
 
 ```sh
 poetry install
+poetry shell
 ```
 
 ### Download the Data
