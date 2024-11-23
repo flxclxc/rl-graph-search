@@ -1,7 +1,16 @@
 # Learning to Search on Graphs
+This is the code for the paper *Reinforcement Learning Discovers Efficient Decentralized Graph Path Search Strategies* by [Alexei Pisacane](https://www.linkedin.com/in/alexei-pisacane-9065141b2/), [Victor-Alexandru Darvariu](https://victor.darvariu.me), and [Mirco Musolesi](https://www.mircomusolesi.org/), presented at the Third Learning on Graphs Conference (LoG 2024). If you use this code, please consider citing our work:
 
-Graph path search is a classic computer science problem that has been recently approached with Reinforcement Learning (RL) due to its potential to outperform prior methods. Existing RL techniques typically assume a global view of the network, which is not suitable for large-scale, dynamic, and privacy-sensitive settings. An area of particular interest is search in social networks due to its numerous applications. 
-Inspired by seminal work in experimental sociology, which showed that decentralized yet efficient search is possible in social networks, we frame the problem as a collaborative task between multiple agents equipped with a limited local view of the network. We propose a multi-agent approach for graph path search that successfully leverages both homophily and structural heterogeneity. Our experiments, carried out over synthetic and real-world social networks, demonstrate that our model significantly outperforms learned and heuristic baselines. Furthermore, our results show that meaningful embeddings for graph navigation can be constructed using reward-driven learning.
+```
+@inproceedings{pisacane24reinforcement,
+  title = {Reinforcement Learning Discovers Efficient Decentralized Graph Path Search Strategies},
+  author = {Pisacane, Alexei and Darvariu, Victor-Alexandru and Musolesi, Mirco},
+  booktitle = {Proceedings of the Third Learning on Graphs Conference (LoG 2024)},
+  year = {2024},
+  volume = {269},
+  series = {Proceedings of Machine Learning Research},
+  publisher = {PMLR},
+}
 
 ## Getting Started
 
