@@ -38,22 +38,15 @@ class A2C(Agent):
 
                 node.action_list = list(ego_graph.neighbors(node_idx))
                 node.action_idxs = [
-                    node_list.index(action)
-                    for action in node.action_list
+                    node_list.index(action) for action in node.action_list
                 ]
                 nodes.append(node)
 
                 if use_ego_graph:
                     ego_graph = utils.from_networkx(ego_graph)
-                    feats = [
-                        ego_graph.pos_pca
-                        if use_pca
-                        else ego_graph.pos
-                    ]
+                    feats = [ego_graph.pos_pca if use_pca else ego_graph.pos]
 
-                    center_indicator = T.zeros(
-                        ego_graph.pos.shape[0], 1
-                    )
+                    center_indicator = T.zeros(ego_graph.pos.shape[0], 1)
                     center_indicator[node_list.index(node_idx)] = 1
 
                     feats.append(center_indicator)
@@ -74,17 +67,15 @@ class A2C(Agent):
         self.beta = config["beta"]
 
     def pi(self, state):
-        attributes = self.attributes[
-            self.nodes[state].action_list
-        ].to(self.actor.device)  # (n_actions, attribute_dim)
+        attributes = self.attributes[self.nodes[state].action_list].to(
+            self.actor.device
+        )  # (n_actions, attribute_dim)
 
         message = self.message.unsqueeze(0).expand(
             attributes.shape[0], -1
         )  # (n_actions, message_dim)
-        
-        return self.actor.forward(
-            T.cat((attributes, message), dim=-1)
-        )
+
+        return self.actor.forward(T.cat((attributes, message), dim=-1))
 
     def choose_action(self, state):
         with T.no_grad():
@@ -108,13 +99,9 @@ class A2C(Agent):
         """
 
         attributes = self.attributes[states]
-        message = self.message.unsqueeze(0).expand(
-            attributes.shape[0], -1
-        )
+        message = self.message.unsqueeze(0).expand(attributes.shape[0], -1)
 
-        return self.critic(
-            T.cat((message, attributes), dim=-1)
-        ).squeeze(-1)
+        return self.critic(T.cat((message, attributes), dim=-1)).squeeze(-1)
 
     def step(self, states, log_probs, entropies, final_reward):
         values = self.q(states)

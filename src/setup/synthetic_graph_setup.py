@@ -7,11 +7,10 @@ from os import mkdir
 from os.path import exists, join
 
 import matplotlib.pyplot as plt
-from scipy.spatial.distance import euclidean
-from sklearn.model_selection import train_test_split
-
 import networkx as nx
 from networkx.utils import nodes_or_number, py_random_state
+from scipy.spatial.distance import euclidean
+from sklearn.model_selection import train_test_split
 
 
 @py_random_state(5)
@@ -68,14 +67,16 @@ if __name__ == "__main__":
     n = 200
     alpha = 30
     test_size = 1000
-    
-    for beta in [0.1, 0.2, 0.3, 0.4, 0.5]:
+
+    for beta in [0.01, 0.05, 0.1, 0.2, 0.3, 0.4, 0.5, 0.75, 1.0]:
         for seed in range(10):
-            experiment_name = f"kh_n_{n}_beta_{beta}_alpha_{alpha}_seed_{seed}".replace(".", "p")
-            
-            g = kaiser_hilgetag_graph(
-                n=n, beta=beta, alpha=alpha, seed=seed
-            )   
+            experiment_name = (
+                f"kh_n_{n}_beta_{beta}_alpha_{alpha}_seed_{seed}".replace(
+                    ".", "p"
+                )
+            )
+
+            g = kaiser_hilgetag_graph(n=n, beta=beta, alpha=alpha, seed=seed)
 
             nodelist = list(g.nodes)
             train_nodes, test_nodes = train_test_split(

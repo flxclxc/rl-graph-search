@@ -33,9 +33,7 @@ def objective(
     config["beta"] = trial.suggest_float("beta", 0.0, 1e-1)
     pbar = tqdm(range(args.n_episodes), postfix="Validation: None")
 
-    env = Env(
-        max_episode_length=50, k=1, experiment_dir=experiment_dir
-    )
+    env = Env(max_episode_length=50, k=1, experiment_dir=experiment_dir)
 
     agent = Agent(
         env=env,
@@ -52,9 +50,7 @@ def objective(
         states = []
         log_probs = []
         entropies = []
-        message = T.tensor(
-            message, device=agent.actor.device, dtype=T.float
-        )
+        message = T.tensor(message, device=agent.actor.device, dtype=T.float)
 
         while not done:
             states.append(state)
@@ -69,9 +65,7 @@ def objective(
             state = next_state
 
         if len(states) > 1:
-            agent.step(
-                states, T.stack(log_probs), T.stack(entropies), reward
-            )
+            agent.step(states, T.stack(log_probs), T.stack(entropies), reward)
 
         if i % eval_interval == 0:
             test_scores = test(agent, env, dataset=validation_set)

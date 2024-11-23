@@ -123,7 +123,7 @@ class GNNA2C(A2C):
     def set_target(self, target, message):
         if self.train_mode or self.attributes is None:
             self.embed_ego_graphs()
-            
+
         self.message = self.attributes[target][:-1].to(self.actor.device)
         self.message
 
@@ -153,9 +153,7 @@ class GNNA2C(A2C):
             )
 
             if os.path.exists(
-                os.path.join(
-                    load_dir, "models", self.name, "optimizer.pt"
-                )
+                os.path.join(load_dir, "models", self.name, "optimizer.pt")
             ):
                 self.optimizer.load_state_dict(
                     T.load(
@@ -172,11 +170,7 @@ class GNNA2C(A2C):
             self.actor.load_checkpoint()
             self.critic.load_checkpoint()
             self.gnn.load_checkpoint()
-            if os.path.exists(
-                os.path.join(self.save_dir, "optimizer.pt")
-            ):
+            if os.path.exists(os.path.join(self.save_dir, "optimizer.pt")):
                 self.optimizer.load_state_dict(
-                    T.load(
-                        os.path.join(self.save_dir, "optimizer.pt")
-                    )
+                    T.load(os.path.join(self.save_dir, "optimizer.pt"))
                 )

@@ -1,0 +1,85 @@
+models:
+  mlp:
+    h_actor: 64
+    h_critic": 64
+    h_rep: 64
+    rep_layers: 3
+    rep_dim: 32
+    lr: 1e-4
+    gamma: 0.99
+    beta: 1e-3
+    batch_size: 1024
+
+  gnn:
+    h_actor: 64
+    h_critic: 64
+    h_rep: 64
+    rep_layers: 3
+    rep_dim: 32
+    lr: 1e-4
+    gamma: 0.99
+    beta: 1e-3
+    batch_size: 1024
+
+truncation_length: 100
+softmax_temps:
+  - 1e-4
+  - 5e-4
+  - 1e-3
+  - 5e-3
+  - 1e-2
+  - 5e-2
+  - 1e-1
+  - 5e-1
+  - 1e1
+  - 1e2
+
+graphs:
+  fb:
+    - 0
+    - 348
+    - 686
+    - 3437
+    - 414
+
+  synthetic:
+    n: 200
+    alpha: 
+      - 30
+    beta: 
+      - 0.01
+      - 0.05
+      - 0.1
+      - 0.2
+      - 0.3
+      - 0.4
+      - 0.5
+      - 0.75
+      - 1.0
+      - 5.0
+    seeds: 5
+
+experiments:
+  fb:
+    n_seeds: 10
+
+  sensitivity_analysis:
+    beta: 
+      - 0.01
+      - 0.05
+      - 0.1
+      - 0.2
+      - 0.3
+      - 0.4
+      - 0.5
+      - 0.75
+      - 1.0
+      
+    n_seeds: 5
+
+  ablation:
+    beta: 5.0 
+    n_seeds: 2
+
+n_test: 1000
+n_val: 1000

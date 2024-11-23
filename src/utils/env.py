@@ -55,15 +55,12 @@ class Env(object):
 
         if experiment_mode == 1:
             self.candidate_graphs = [
-                generator(**kwargs)
-                for _ in range(num_candidate_graphs)
+                generator(**kwargs) for _ in range(num_candidate_graphs)
             ]
             self.g = random.choice(self.candidate_graphs)
 
         if experiment_mode == 2:
-            with open(
-                os.path.join(self.graph_dir, "graph.pkl"), "rb"
-            ) as f:
+            with open(os.path.join(self.graph_dir, "graph.pkl"), "rb") as f:
                 self.g = pickle.load(f)
             with open(
                 os.path.join(self.graph_dir, "train_nodes.pkl"), "rb"
@@ -95,15 +92,13 @@ class Env(object):
                 node_attributes - np.mean(node_attributes, axis=0)
             ) / (node_attributes.std() + 1e-10)
             pca = PCA(n_components=pca_dim)
-            transformed_attributes = pca.fit_transform(
-                node_attributes
-            )
+            transformed_attributes = pca.fit_transform(node_attributes)
 
             # Add the transformed attributes back to the graph
             for i, node in enumerate(self.g.nodes()):
-                self.g.nodes[node][
-                    "pos_pca"
-                ] = transformed_attributes[i].tolist()
+                self.g.nodes[node]["pos_pca"] = transformed_attributes[
+                    i
+                ].tolist()
             self.pos = nx.spring_layout(self.g)
         else:
             self.pos = nx.get_node_attributes(self.g, "pos")
@@ -121,24 +116,17 @@ class Env(object):
             self.update_temp()
 
             d = dict(nx.shortest_path_length(self.g, source=target))
-            viable_nodes = [
-                node for node in self.g.nodes() if node != target
-            ]
+            viable_nodes = [node for node in self.g.nodes() if node != target]
             dists = [d[node] for node in viable_nodes]
 
             probs = F.softmax(
-                -T.tensor(dists, dtype=T.float)
-                / self.curriculum_temp,
+                -T.tensor(dists, dtype=T.float) / self.curriculum_temp,
                 dim=-1,
             )
-            return viable_nodes[
-                T.multinomial(probs, num_samples=1).item()
-            ]
+            return viable_nodes[T.multinomial(probs, num_samples=1).item()]
 
         else:
-            nodes = [
-                node for node in self.train_nodes if node != target
-            ]
+            nodes = [node for node in self.train_nodes if node != target]
             return random.choice(nodes)
 
     def reset_seed(self, seed: int = None):
@@ -170,14 +158,10 @@ class Env(object):
             self.g = random.choice(self.candidate_graphs)
             self.target = random.choice(list(self.g.nodes))
             self.neighbourhood_graphs = [
-                nx.ego_graph(
-                    self.g, node, radius=self.k, center=False
-                )
+                nx.ego_graph(self.g, node, radius=self.k, center=False)
                 for node in self.g.nodes()
             ]
-            self.state = random.choice(
-                range(self.g.number_of_nodes())
-            )
+            self.state = random.choice(range(self.g.number_of_nodes()))
 
         elif self.experiment_mode == 2:
             self.target = random.choice(self.train_nodes)
@@ -260,10 +244,7 @@ class Env(object):
     def save_render(self, filename, speed=300):
         imageio.mimwrite(
             filename,
-            [
-                imageio.v2.imread(buffer)
-                for buffer in self.render_frames
-            ],
+            [imageio.v2.imread(buffer) for buffer in self.render_frames],
             duration=speed,
             interval=speed,
         )

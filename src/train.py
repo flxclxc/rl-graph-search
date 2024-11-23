@@ -6,6 +6,7 @@ from os import mkdir, path
 
 import numpy as np
 import torch as T
+import yaml
 
 from agents.gnn_a2c import GNNA2C
 from agents.mlp_a2c import MLPA2C
@@ -14,9 +15,7 @@ from utils.execution import trainwb
 from utils.helpers import precompute_graph_info
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(
-        description="My program description"
-    )
+    parser = argparse.ArgumentParser()
     parser.add_argument("--graph", type=str)
     parser.add_argument("--load_checkpoint", action="store_true")
     parser.add_argument("--model", type=str, default="gnn")
@@ -25,12 +24,15 @@ if __name__ == "__main__":
     parser.add_argument("--no_eval", action="store_true")
     parser.add_argument("--seed", type=int, default=0)
     parser.add_argument("--no_log", action="store_false")
-    parser.add_argument("--truncation_length", type=int, default=100)
     parser.add_argument("--n_episodes", type=int, default=100000)
 
     args = parser.parse_args()
     experiment_dir = path.join("graphs", str(args.graph))
     seed = args.seed
+
+    # open yaml config
+    with open("config.yml", "r") as f:
+        config = yaml.safe_load(f)
 
     np.random.seed(seed)
     T.manual_seed(seed)
@@ -39,7 +41,7 @@ if __name__ == "__main__":
     random.seed(seed)
 
     env = Env(
-        max_episode_length=args.truncation_length,
+        max_episode_length=config["truncation_length"],
         k=1,
         experiment_dir=experiment_dir,
     )
@@ -49,27 +51,20 @@ if __name__ == "__main__":
     if not path.exists(model_dir):
         mkdir(model_dir)
 
-    elif args.model == "gnn":
+    if args.model == "gnn":
         Agent = GNNA2C
-        config_path = "configs/gnn.json"
 
-    elif args.model == "mlp":
+    if args.model == "mlp":
         Agent = MLPA2C
-        config_path = "configs/mlp.json"
 
     print(f"Loading config from {config_path}")
-
-    with open(config_path) as f:
-        config = json.load(f)
 
     if path.exists(path.join(experiment_dir, "data", "nodes.pkl")):
         nodes = pickle.load(
             open(path.join(experiment_dir, "data", "nodes.pkl"), "rb")
         )
 
-    if path.exists(
-        path.join(experiment_dir, "data", "ego_graphs.pkl")
-    ):
+    if path.exists(path.join(experiment_dir, "data", "ego_graphs.pkl")):
         ego_graphs = pickle.load(
             open(
                 path.join(experiment_dir, "data", "ego_graphs.pkl"),
@@ -84,7 +79,7 @@ if __name__ == "__main__":
 
     agent = Agent(
         env=env,
-        config=config,
+        config=config[args.model],
         chkpt_dir=path.join(experiment_dir, "models"),
         device=("cuda:0" if T.cuda.is_available() else "cpu")
         if args.cuda

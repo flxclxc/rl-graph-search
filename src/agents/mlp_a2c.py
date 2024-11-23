@@ -28,11 +28,7 @@ class MLPA2C(A2C):
             ego_graphs=ego_graphs,
         )
         self.use_degree = use_degree
-        feat = (
-            "pos_pca"
-            if "pos_pca" in env.g.nodes()[0].keys()
-            else "pos"
-        )
+        feat = "pos_pca" if "pos_pca" in env.g.nodes()[0].keys() else "pos"
         self.attributes = T.tensor(
             list(nx.get_node_attributes(env.g, feat).values()),
             dtype=T.float32,
@@ -41,9 +37,7 @@ class MLPA2C(A2C):
         self.message_dim = self.attributes.shape[1]
         if use_degree:
             degrees = T.tensor(
-                list(
-                    nx.get_node_attributes(env.g, "degree").values()
-                ),
+                list(nx.get_node_attributes(env.g, "degree").values()),
                 dtype=T.float32,
             )
             self.attributes = T.cat(
@@ -104,13 +98,9 @@ class MLPA2C(A2C):
         """
 
         attributes = self.attributes[states]
-        message = self.message.unsqueeze(0).expand(
-            attributes.shape[0], -1
-        )
+        message = self.message.unsqueeze(0).expand(attributes.shape[0], -1)
 
-        return self.critic(
-            T.cat((message, attributes), dim=-1)
-        ).squeeze(-1)
+        return self.critic(T.cat((message, attributes), dim=-1)).squeeze(-1)
 
     def save_checkpoints(self):
         if not os.path.exists(self.save_dir):

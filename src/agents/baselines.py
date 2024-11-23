@@ -63,9 +63,7 @@ class DistanceWalker(Agent):
 
 
 class ConnectionWalker(Agent):
-    def __init__(
-        self, g: nx.graph.Graph, softmax_temp: float = 1.0
-    ) -> None:
+    def __init__(self, g: nx.graph.Graph, softmax_temp: float = 1.0) -> None:
         super().__init__()
         self.g = g
         self.name = "ConnectionWalker"
@@ -73,9 +71,7 @@ class ConnectionWalker(Agent):
 
     def choose_action(self, state: int) -> int:
         neighbours = list(self.g.neighbors(state))
-        neighbour_degrees = [
-            self.g.degree[int(n)] for n in neighbours
-        ]
+        neighbour_degrees = [self.g.degree[int(n)] for n in neighbours]
         probs = F.softmax(
             T.tensor(neighbour_degrees) / self.softmax_temp, dim=0
         )

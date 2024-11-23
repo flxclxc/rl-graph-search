@@ -160,13 +160,9 @@ class ActorNetwork(nn.Module):
 
     def load_checkpoint(self, chkpt=None):
         if chkpt is not None:
-            self.load_state_dict(
-                T.load(chkpt, map_location=self.device)
-            )
+            self.load_state_dict(T.load(chkpt, map_location=self.device))
         else:
-            self.load_state_dict(
-                T.load(self.chkpt, map_location=self.device)
-            )
+            self.load_state_dict(T.load(self.chkpt, map_location=self.device))
 
 
 class CriticNetwork(nn.Module):
@@ -205,13 +201,9 @@ class CriticNetwork(nn.Module):
 
     def load_checkpoint(self, chkpt=None):
         if chkpt is not None:
-            self.load_state_dict(
-                T.load(chkpt, map_location=self.device)
-            )
+            self.load_state_dict(T.load(chkpt, map_location=self.device))
         else:
-            self.load_state_dict(
-                T.load(self.chkpt, map_location=self.device)
-            )
+            self.load_state_dict(T.load(self.chkpt, map_location=self.device))
 
 
 class GATLayer(nn.Module):
@@ -243,9 +235,7 @@ class GAT(nn.Module):
     ):
         super(GAT, self).__init__()
         self.conv1 = GATv2Conv(in_channels, h_channels, heads=heads)
-        self.conv2 = GATv2Conv(
-            h_channels * heads, out_channels, heads=heads
-        )
+        self.conv2 = GATv2Conv(h_channels * heads, out_channels, heads=heads)
         self.optimizer = T.optim.Adam(self.parameters(), lr=lr)
         self.device = T.device(device)
         self.chkpt = os.path.join(chkpt_dir, name)
@@ -253,9 +243,7 @@ class GAT(nn.Module):
         self.layers = nn.ModuleList()
 
         # Input layer
-        self.layers.append(
-            GATLayer(in_channels, h_channels, heads=heads)
-        )
+        self.layers.append(GATLayer(in_channels, h_channels, heads=heads))
 
         # Hidden layers
         for _ in range(layers - 2):
@@ -280,13 +268,9 @@ class GAT(nn.Module):
 
     def load_checkpoint(self, chkpt=None):
         if chkpt is not None:
-            self.load_state_dict(
-                T.load(chkpt, map_location=self.device)
-            )
+            self.load_state_dict(T.load(chkpt, map_location=self.device))
         else:
-            self.load_state_dict(
-                T.load(self.chkpt, map_location=self.device)
-            )
+            self.load_state_dict(T.load(self.chkpt, map_location=self.device))
 
 
 class GCN(nn.Module):

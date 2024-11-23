@@ -117,12 +117,8 @@ def train(
 
         states = []
         log_probs = []
-        message = T.tensor(
-            message, device=agent.actor.device, dtype=T.float
-        )
-        oracle_length = (
-            nx.shortest_path_length(env.g, state, target) + 1e-10
-        )
+        message = T.tensor(message, device=agent.actor.device, dtype=T.float)
+        oracle_length = nx.shortest_path_length(env.g, state, target) + 1e-10
         while not done:
             states.append(state)
 
@@ -151,10 +147,7 @@ def train(
                     f"Validation Score | Avg. Episode Length: {avg_test_score}"
                 )
             tqdm.refresh(pbar)
-            if (
-                avg_test_score < best_eval_score
-                and i >= eval_interval
-            ):
+            if avg_test_score < best_eval_score and i >= eval_interval:
                 best_eval_score = avg_test_score
                 agent.save_checkpoints()
                 pbar.set_postfix(
@@ -166,9 +159,7 @@ def train(
             eval_scores.append(avg_test_score)
 
         if i % print_interval == 0 and plot and i >= eval_interval:
-            avg_episode_length = np.mean(
-                episode_lengths[-eval_interval:]
-            )
+            avg_episode_length = np.mean(episode_lengths[-eval_interval:])
             if verbose:
                 pbar.write(
                     f"Episode {i} | Avg. Episode Length: {avg_episode_length}"
@@ -187,8 +178,7 @@ def train(
                 label="Training",
             )
             plt.plot(
-                eval_interval
-                + eval_interval * T.arange(len(eval_scores)),
+                eval_interval + eval_interval * T.arange(len(eval_scores)),
                 eval_scores,
                 label="Validation",
             )
@@ -251,12 +241,8 @@ def trainwb(
         log_probs = []
         entropies = []
 
-        message = T.tensor(
-            message, device=agent.actor.device, dtype=T.float
-        )
-        oracle_length = (
-            nx.shortest_path_length(env.g, state, target) + 1e-10
-        )
+        message = T.tensor(message, device=agent.actor.device, dtype=T.float)
+        oracle_length = nx.shortest_path_length(env.g, state, target) + 1e-10
 
         while not done:
             states.append(state)
@@ -270,9 +256,7 @@ def trainwb(
             state = next_state
 
         if len(states) > 1:
-            agent.step(
-                states, T.stack(log_probs), T.stack(entropies), reward
-            )
+            agent.step(states, T.stack(log_probs), T.stack(entropies), reward)
 
         truncations.append((1 - reward))
         episode_lengths.append(env.episode_length / oracle_length)
@@ -281,10 +265,7 @@ def trainwb(
                 agent, env, dataset=validation_set, use_ratio=True
             )
             avg_test_score = np.mean(test_scores)
-            if (
-                avg_test_score < best_eval_score
-                and i >= eval_interval
-            ):
+            if avg_test_score < best_eval_score and i >= eval_interval:
                 best_eval_score = avg_test_score
                 agent.save_checkpoints()
 

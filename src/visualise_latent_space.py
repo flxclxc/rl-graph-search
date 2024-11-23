@@ -77,9 +77,7 @@ def draw_graph(
             ax=ax,
         )  # scalarMap.to_rgba(max(values)), ax=ax)
         # draw edge colours as average node colour
-    #   for edge in graph.edges():
-    #      nx.draw_networkx_edges(graph, pos, edgelist=[edge], edge_color=scalarMap.to_rgba((values[edge[0]] + values[edge[1]])/2), width=0.1, ax=ax)
-    # make an arrow that labels the target node
+
     ax.annotate(
         "",
         xy=pos[target],
@@ -91,30 +89,14 @@ def draw_graph(
     # show colour scale
 
 
-#  sm = plt.cm.ScalarMappable(cmap=jet, norm=cNorm)
-
 if __name__ == "__main__":
-    # beta_graphs = ["beta_1_seed_0", "beta_1_seed_1", "beta_1_seed_2", "beta_1_seed_3"]
-    # beta_graphs = ["beta_0p01_seed_0", "beta_0p05_seed_0", "beta_0p1_seed_0", "beta_0p5_seed_2", "beta_1_seed_3"]
-    graphs = [
-        "facebook_414",
-        "facebook_348",
-        "facebook_686",
-        "facebook_0",
-        "facebook_3437",
-    ]
-    softmax_temps = [
-        1e-4,
-        5e-4,
-        1e-3,
-        5e-3,
-        1e-2,
-        5e-2,
-        1e-1,
-        5e-1,
-        1e1,
-        1e2,
-    ]
+    with open("config.yml", "r") as f:  
+        config = yaml.safe_load(f)
+          
+    fb_graphs = [f"facebook_{i}" for i in config['graphs']['fb']]
+
+    softmax_temps = config["softmax_temps"]
+    
     gnn_values = []
     distwalk_values = []
 
@@ -124,12 +106,10 @@ if __name__ == "__main__":
     random.seed(1)
     fig, ax = plt.subplots(nrows=5, ncols=2, figsize=(8, 8))
 
-    for i, graph in enumerate(graphs):
+    for i, graph in enumerate(fb_graphs):
         print(f"Graph: {graph}")
         experiment_dir = "graphs/" + graph
-        env = Env(
-            max_episode_length=100, k=1, experiment_dir=experiment_dir
-        )
+        env = Env(max_episode_length=100, k=1, experiment_dir=experiment_dir)
         pos = nx.get_node_attributes(env.g, name="pos")
         if len(pos[0]) > 2:
             pos = nx.spring_layout(env.g)
@@ -176,9 +156,7 @@ if __name__ == "__main__":
                 )
             )
 
-        optimal_distwalk_temp = softmax_temps[
-            np.argmin(distwalk_scores)
-        ]
+        optimal_distwalk_temp = softmax_temps[np.argmin(distwalk_scores)]
 
         optimal_dws.append(optimal_distwalk_temp)
         optimal_distwalk_temp = optimal_dws[i]
@@ -196,26 +174,11 @@ if __name__ == "__main__":
             list(nx.get_node_attributes(env.g, name="pos").values())
         )
         message = attributes[target]
-        pairwise_dists = T.pairwise_distance(
-            attributes, message.unsqueeze(0)
-        )
+        pairwise_dists = T.pairwise_distance(attributes, message.unsqueeze(0))
         dw_val = -pairwise_dists / optimal_distwalk_temp
         path_length_dict = nx.shortest_path_length(env.g, target)
-        draw_graph(
-            env.g, target, pos=pos, values=gnn_val, ax=ax[i, 0]
-        )  # , arrow_length=arrow_lengths[i])
-        draw_graph(
-            env.g, target, pos=pos, values=dw_val, ax=ax[i, 1]
-        )  # , arrow_length=arrow_lengths[i])
-    #  draw_graph(env.g, target, pos=pos, values=shortest_paths, ax=ax[i,2], arrow_length=0.2 if i != 0.2 else 0.2)
-
-    # if i == 0:
-    # ax[i,0].set_title("GARDEN Value Function", fontsize=10)
-    # ax[i,1].set_title("DistanceWalker Preferability Score", fontsize=10)
-    #  ax[i,2].set_title("Negative Shortest Path Length", fontsize=10)
-    # ax[i,0].annotate(r"$\beta = $" + str(betas[i]), xy=(0.5, -0.15), xycoords="axes fraction", ha="center", fontsize=10)
-    # ax[i,1].annotate(r"$\beta = $" + str(betas[i]), xy=(0.5, -0.15), xycoords="axes fraction", ha="center", fontsize=10)
-    # ax[i,2].annotate(r"$\beta = $" + str(betas[i]), xy=(0.5, -0.15), xycoords="axes fraction", ha="center", fontsize=10)
-
+        draw_graph(env.g, target, pos=pos, values=gnn_val, ax=ax[i, 0])
+        draw_graph(env.g, target, pos=pos, values=dw_val, ax=ax[i, 1])
+    
     fig.tight_layout()
-    plt.savefig("plots/gnn_vs_distwalk.png", dpi=300)
+    plt.savefig("results/latent_space.png", dpi=300)
