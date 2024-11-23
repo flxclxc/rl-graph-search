@@ -61,7 +61,6 @@ To test a model on one seed, run the following command:
 python src/test.py --model {MODEL} --graph {GRAPH} --seed {SEED}
 
 ```
-note: facebook graphs used were fb 0, 348, 686, 3437, 414
 
 ### Replicating Results
 
