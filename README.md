@@ -45,12 +45,7 @@ To setup the real and synthetic graphs for experiments,  run the following comma
 bash setup.sh
 
 ```
-### Create synthetic graphs
-
-To generate a synthetic graph with parameters, run the following command:
-```sh
-python src/setup/synthetic_graph_setup --n {N} --alpha {ALPHA} --beta {BETA} --experiment_name {EXPERIMENT_NAME} --seed {SEED}
-```
+The graphs are stored in folder **graphs**.
 ### Train models
 
 To train a model from {mlp,gnn} on a given graph, run the following command:
