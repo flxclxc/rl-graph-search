@@ -37,13 +37,13 @@ poetry install
 poetry shell
 ```
 
-### Download the Data
+### Experiment Setup
 
-Download the Facebook data to your local machine, and run the experimental setup script to preprocess the graphs:
+To setup the real and synthetic graphs for experiments,  run the following command:
 
 ```sh
-bash download_fb_data.sh
-python src/setup/fb_graph_setup.py
+bash setup.sh
+
 ```
 ### Create synthetic graphs
 
