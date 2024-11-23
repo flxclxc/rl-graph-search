@@ -67,7 +67,7 @@ python src/test.py --model {MODEL} --graph {GRAPH} --seed {SEED}
 To replicate the results from the paper, you must train GARDEN on 10 random seeds for each facebook graph.
 
 GARDEN must be trained on each of the synthetic graphs generated.
-MLPA2C and MLPA2CWS must be trained on each of the synthetic graphs generated with $\beta=5$.
+MLPA2C and MLPA2CWD must be trained on each of the synthetic graphs generated with $\beta=5$.
 
 We recommend using a cluster to train the models in parallel. GARDEN may benefit from a GPU. You may need to set up a free weights and biases account to track the training progress.
 
