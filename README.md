@@ -11,6 +11,7 @@ This is the code for the paper *Reinforcement Learning Discovers Efficient Decen
   series = {Proceedings of Machine Learning Research},
   publisher = {PMLR},
 }
+```
 
 ## Getting Started
 
