@@ -69,6 +69,6 @@ To replicate the results from the paper, you must train GARDEN on 10 random seed
 GARDEN must be trained on each of the synthetic graphs generated.
 MLPA2C and MLPA2CWD must be trained on each of the synthetic graphs generated with $\beta=5$.
 
-We recommend using a cluster to train the models in parallel. GARDEN may benefit from a GPU. You may need to set up a free weights and biases account to track the training progress.
+We recommend using a cluster to train the models in parallel. GARDEN may benefit from a GPU. You may need to set up a free Weights and Biases account to track the training progress.
 
 Once this has been completed, the results can be generated using the scripts the src folder
